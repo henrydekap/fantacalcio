@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 1600px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>BrambaCalcio</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Role</th>
+            <th>Name</th>
+            {% for match_day in match_day_list %}
+                <th>{{ match_day.number }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in player_list %}
+            <tr>
+                <td>{{ player.role }}</td>
+                <td>{{ player.name }}</td>
+                {% for match_day in match_day_list %}
+                    <td></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
