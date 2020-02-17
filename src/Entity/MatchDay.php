@@ -131,4 +131,20 @@ class MatchDay
 
         return $this;
     }
+
+  /**
+   * @param Player $player
+   * @return PlayerVote
+   */
+  public function getVoteFor(Player $player): PlayerVote
+    {
+      foreach ($this->playerVotes as $playerVote) {
+        /* @var \App\Entity\PlayerVote $playerVote */
+        if ($playerVote->getPlayer() == $player) {
+          return $playerVote;
+        }
+      }
+
+      return new PlayerVote();
+    }
 }
