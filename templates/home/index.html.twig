@@ -18,7 +18,9 @@
             <th>Role</th>
             <th>Name</th>
             {% for match_day in match_day_list %}
-                <th>{{ match_day.number }}</th>
+                <th>
+                    <a href="{{ path('matchday_edit', { match_day: match_day.number }) }}">{{ match_day.number }}</a>
+                </th>
             {% endfor %}
         </tr>
         </thead>

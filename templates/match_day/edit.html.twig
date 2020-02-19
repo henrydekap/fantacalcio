@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MatchDay{% endblock %}
+
+{% block body %}
+    <h1>Edit MatchDay</h1>
+
+    {{ include('match_day/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('home') }}">back to list</a>
+
+{% endblock %}
