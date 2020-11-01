@@ -120,6 +120,7 @@ class MatchDay
   public function setUrl(string $url): self
   {
     $this->url = $url;
+    return $this;
   }
 
   /**
@@ -135,6 +136,7 @@ class MatchDay
     if (!$this->playerVotes->contains($playerVote)) {
       $this->playerVotes[] = $playerVote;
       $playerVote->setMatchDay($this);
+      return $this;
     }
 
     return $this;
