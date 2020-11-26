@@ -39,6 +39,11 @@ class Player
         $this->playerVotes = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->role . " " . $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,5 +102,17 @@ class Player
         }
 
         return $this;
+    }
+
+    public function getBestPercentage(): float
+    {
+        $best_appearance = 0;
+        foreach ($this->playerVotes as $pv) {
+            if ($pv->getBest()) {
+                $best_appearance++;
+            }
+        }
+
+        return $best_appearance / count($this->playerVotes);
     }
 }

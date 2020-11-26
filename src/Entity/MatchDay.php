@@ -170,4 +170,9 @@ class MatchDay
 
     return new PlayerVote();
   }
+
+  public function getDifference(): ?float
+  {
+    return $this->best_result - $this->result;
+  }
 }

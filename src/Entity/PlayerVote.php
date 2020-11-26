@@ -34,11 +34,6 @@ class PlayerVote
     private $vote;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\MatchDay", inversedBy="best_votes")
-     */
-    private $matchDay;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $selected;
@@ -46,7 +41,12 @@ class PlayerVote
     /**
      * @ORM\Column(type="boolean")
      */
-    private $best;
+    private $best = false;
+
+    public function __toString(): string
+    {
+        return $this->getPlayer() . " | " . $this->vote;
+    }
 
     public function getId(): ?int
     {
