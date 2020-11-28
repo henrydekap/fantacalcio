@@ -11,12 +11,12 @@ use Psr\Log\LoggerInterface;
 
 class FantaSoccerScraper implements MatchDayScraperInterface, LoggerAwareInterface
 {
-  private LoggerInterface $logger;
-  private EntityManagerInterface $em;
-  private string $login_url;
-  private string $login_username;
-  private string $login_password;
-  private string $squad_name;
+  private $logger;
+  private $em;
+  private $login_url;
+  private $login_username;
+  private $login_password;
+  private $squad_name;
   
   public function __construct(EntityManagerInterface $em, string $login_url, string $login_username, string $login_password, string $squad_name)
   {

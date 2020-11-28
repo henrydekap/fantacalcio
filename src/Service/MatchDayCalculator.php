@@ -14,8 +14,8 @@ use Doctrine\Common\Collections\Collection;
 
 class MatchDayCalculator implements LoggerAwareInterface
 {
-    private EntityManagerInterface $em;
-    private LoggerInterface $logger;
+    private $em;
+    private $logger;
 
     public function __construct(EntityManagerInterface $em)
     {
