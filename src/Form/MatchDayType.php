@@ -16,7 +16,8 @@ class MatchDayType extends AbstractType
   {
     $builder
       ->add('number', IntegerType::class)
-      ->add('match_date', DateType::class)
+      ->add('match_date', DateType::class, [
+        'widget' => 'single_text',])
       ->add('url', TextType::class);
   }
 
