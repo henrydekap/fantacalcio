@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Match {{ match_day.number }}{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <div class="mb-2">
+        <h2>Match {{ match_day.number }} - {{ match_day.matchDate|date }}</h2>
+        <a class="btn btn-primary mt-1" href="{{ path('matchday_edit', { match_day_number: match_day.number }) }}">Edit Match Day info</a>
+        <a class="btn btn-secondary mt-1 href="{{ path('home') }}">Back to list</a>
+    </div>
+
+    <div class="float-none">
+        <table class="table table-hover col-sm-5 float-left">
+            <thead class="thead-light">
+            <tr>
+                <th>Role</th>
+                <th>Name</th>
+                <th>Vote</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set role = '' %}
+            {% for player_vote in selected_list %}
+                <tr class="player-role role-{{ player_vote.player.role|lower }} {% if role != player_vote.player.role %} role-first {% endif %}" >
+                    <td>{{ player_vote.player.role }}</td>
+                    <td>{{ player_vote.player.name }}</td>
+                    <td class="">
+                        {{ match_day.getVoteFor(player_vote.player).getVote() }}
+                    </td>
+                </tr>
+                {% set role = player_vote.player.role %}
+            {% endfor %}
+            </tbody>
+            <tfoot class="totals">
+                <tr>
+                    <td colspan="2">Reale</td>
+                    <td>{{ match_day.getResult() }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="table table-hover col-sm-5 float-right">
+            <thead class="thead-light">
+            <tr>
+                <th>Role</th>
+                <th>Name</th>
+                <th>Vote</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set role = '' %}
+            {% for player_vote in best_list %}
+                <tr class="player-role role-{{ player_vote.player.role|lower }} {% if role != player_vote.player.role %} role-first {% endif %}" >
+                    <td>{{ player_vote.player.role }}</td>
+                    <td>{{ player_vote.player.name }}</td>
+                    <td class="">
+                        {{ match_day.getVoteFor(player_vote.player).getVote() }}
+                    </td>
+                </tr>
+                {% set role = player_vote.player.role %}
+            {% endfor %}
+            </tbody>
+            <tfoot class="totals">
+                <tr>
+                    <td colspan="2">Massimo</td>
+                    <td>{{ match_day.getBestResult() }}</td>
+                </tr>
+                
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endblock %}

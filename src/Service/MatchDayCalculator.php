@@ -27,7 +27,7 @@ class MatchDayCalculator implements LoggerAwareInterface
         $this->logger = $logger;
     }
 
-    public function getSelectedPlayerOrderByLowerVotes($match_day): Collection
+    public function getSelectedPlayerOrderByLowerVotes(MatchDay $match_day): Collection
     {
         $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv WHERE pv.match_day = :match_day and pv.selected = 1 ORDER BY pv.vote ASC");
         $q->setParameter('match_day', $match_day);
@@ -37,7 +37,7 @@ class MatchDayCalculator implements LoggerAwareInterface
         return $selected;
     }
 
-    public function getNotSelectedPlayerOrderByHigherVotes($match_day): Collection
+    public function getNotSelectedPlayerOrderByHigherVotes(MatchDay $match_day): Collection
     {
         $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv WHERE pv.match_day = :match_day and pv.selected = 0 ORDER BY pv.vote DESC");
         $q->setParameter('match_day', $match_day);
@@ -46,6 +46,26 @@ class MatchDayCalculator implements LoggerAwareInterface
         $not_selected = new ArrayCollection($result);
 
         return $not_selected;
+    }
+
+    public function getSelectedPlayersOrderByRole(MatchDay $match_day): Collection
+    {
+        $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv INNER JOIN pv.player p WHERE pv.match_day = :match_day and pv.selected = 1 ORDER BY p.role DESC");
+        $q->setParameter('match_day', $match_day);
+        $result = $q->getResult();
+        $selected = new ArrayCollection($result);
+
+        return $selected;
+    }
+
+    public function getBestPlayersOrderByRole(MatchDay $match_day): Collection
+    {
+        $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv INNER JOIN pv.player p WHERE pv.match_day = :match_day and pv.best = 1 ORDER BY p.role DESC");
+        $q->setParameter('match_day', $match_day);
+        $result = $q->getResult();
+        $best = new ArrayCollection($result);
+
+        return $best;
     }
 
     public function calculateResults(MatchDay $match_day)

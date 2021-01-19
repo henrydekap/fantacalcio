@@ -3,31 +3,6 @@
 {% block title %}SbrambaFantacalcio Manager{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 1600px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    
-    .best { background: #00FF00 }
-
-    .player-role { border-left: solid 2px black; }
-    .role-first { border-top: solid 2px black; }
-    .player-role:last-child { border-bottom: solid 2px black; }
-
-    .percentage {border-right: solid 2px black;}
-    
-    .best-0-2 { background-color: #e67c73; }
-    .best-2-4 { background-color: #f0b045; }
-    .best-4-6 { background-color: #fae417; }
-    .best-6-8 { background-color: #9bd752; }
-    .best-8-0 { background-color: #57bb8a; }
-
-
-    .totals { font-weight: bold; }
-
-    .diff-bad { background: #f57f7f }
-    .diff-good { background: #7ff583 }
-
-</style>
 
 <div class="example-wrapper">
     <h1>{{ squad_name }}</h1>
@@ -40,7 +15,7 @@
             <th>%</th>
             {% for match_day in match_day_list %}
                 <th>
-                    <a href="{{ path('matchday_edit', { match_day_number: match_day.number }) }}">{{ match_day.number }}</a>
+                    <a href="{{ path('matchday_show', { match_day_number: match_day.number }) }}">{{ match_day.number }}</a>
                 </th>
             {% endfor %}
                 <th>

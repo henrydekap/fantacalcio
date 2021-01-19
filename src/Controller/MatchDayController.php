@@ -15,15 +15,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatchDayController extends AbstractController
 {
   /**
-   * @Route("/matchday", name="matchday")
+   * @Route("/matchday/show/{match_day_number}", name="matchday_show", methods={"GET"})
    */
-  public function index()
+  public function show(Request $request, int $match_day_number, EntityManagerInterface $em, MatchDayCalculator $calculator): Response
   {
-    return $this->render('match_day/index.html.twig', [
-      'controller_name' => 'MatchDayController',
+    $match_day_repo = $em->getRepository(MatchDay::class);
+    $match_day      = $match_day_repo->findOneBy(['number' => $match_day_number]);
+    if (!$match_day) {
+      $match_day      = new MatchDay();
+      $match_day->setNumber($match_day_number);
+      $em->persist($match_day);
+    }
+
+    $selected_list = $calculator->getSelectedPlayersOrderByRole($match_day);
+    $best_list = $calculator->getBestPlayersOrderByRole($match_day);
+
+    return $this->render('match_day/show.html.twig', [
+      'match_day' => $match_day,
+      'selected_list' => $selected_list,
+      'best_list' => $best_list,
     ]);
   }
-
   /**
    * @Route("/matchday/edit/{match_day_number}", name="matchday_edit", methods={"GET","POST"})
    */
