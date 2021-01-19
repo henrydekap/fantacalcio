@@ -19,7 +19,11 @@ class HomeController extends AbstractController
   public function index(EntityManagerInterface $em)
   {
     $player_repo = $em->getRepository(Player::class);
-    $player_list = $player_repo->findAll();
+    $gk   = $player_repo->findByRole('P');
+    $def  = $player_repo->findByRole('D');
+    $mid  = $player_repo->findByRole('C');
+    $att  = $player_repo->findByRole('A');
+    $player_list = \array_merge($gk, $def, $mid, $att);
 
     $matchday_repo  = $em->getRepository(MatchDay::class);
     $match_day_list = $matchday_repo->findAll();

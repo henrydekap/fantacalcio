@@ -173,6 +173,6 @@ class MatchDay
 
   public function getDifference(): ?float
   {
-    return $this->best_result - $this->result;
+    return round($this->best_result - $this->result, 2);
   }
 }
