@@ -52,11 +52,12 @@
             <tbody>
             {% set role = '' %}
             {% for player_vote in best_list %}
-                <tr class="player-role role-{{ player_vote.player.role|lower }} {% if role != player_vote.player.role %} role-first {% endif %}" >
-                    <td>{{ player_vote.player.role }}</td>
-                    <td>{{ player_vote.player.name }}</td>
+                {% set best_not_selected = (player_vote.getBest() and not player_vote.getSelected()) %}
+                <tr class="player-role role-{{ player_vote.player.role|lower }} {% if role != player_vote.player.role %} role-first {% endif %} {% if best_not_selected == true %} best {% endif %}" >
+                    <td class="">{{ player_vote.player.role }}</td>
+                    <td class="">{{ player_vote.player.name }}</td>
                     <td class="">
-                        {{ match_day.getVoteFor(player_vote.player).getVote() }}
+                        {{ player_vote.getVote() }}
                     </td>
                 </tr>
                 {% set role = player_vote.player.role %}

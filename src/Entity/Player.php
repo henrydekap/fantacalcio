@@ -113,6 +113,7 @@ class Player
             }
         }
 
+        if (count($this->playerVotes) == 0) return 0;
         return $best_appearance / count($this->playerVotes);
     }
 }
