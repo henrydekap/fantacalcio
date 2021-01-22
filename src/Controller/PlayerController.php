@@ -16,16 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlayerController extends AbstractController
 {
     /**
-     * @Route("/", name="player_index", methods={"GET"})
-     */
-    public function index(PlayerRepository $playerRepository): Response
-    {
-        return $this->render('player/index.html.twig', [
-            'players' => $playerRepository->findAll(),
-        ]);
-    }
-
-    /**
      * @Route("/new", name="player_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -39,56 +29,12 @@ class PlayerController extends AbstractController
             $entityManager->persist($player);
             $entityManager->flush();
 
-            return $this->redirectToRoute('player_index');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('player/new.html.twig', [
             'player' => $player,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/{id}", name="player_show", methods={"GET"})
-     */
-    public function show(Player $player): Response
-    {
-        return $this->render('player/show.html.twig', [
-            'player' => $player,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="player_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Player $player): Response
-    {
-        $form = $this->createForm(PlayerType::class, $player);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('player_index');
-        }
-
-        return $this->render('player/edit.html.twig', [
-            'player' => $player,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="player_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Player $player): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$player->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($player);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('player_index');
     }
 }
