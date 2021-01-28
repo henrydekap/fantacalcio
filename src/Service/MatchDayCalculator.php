@@ -58,6 +58,16 @@ class MatchDayCalculator implements LoggerAwareInterface
         return $selected;
     }
 
+    public function getSelectedBenchPlayers(MatchDay $match_day): Collection
+    {
+      $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv INNER JOIN pv.player p WHERE pv.match_day = :match_day and pv.selected = 0");
+        $q->setParameter('match_day', $match_day);
+        $result = $q->getResult();
+        $selected_bench = new ArrayCollection($result);
+
+        return $selected_bench;
+    }
+
     public function getBestPlayersOrderByRole(MatchDay $match_day): Collection
     {
         $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv INNER JOIN pv.player p WHERE pv.match_day = :match_day and pv.best = 1 ORDER BY p.role DESC");
@@ -66,6 +76,16 @@ class MatchDayCalculator implements LoggerAwareInterface
         $best = new ArrayCollection($result);
 
         return $best;
+    }
+
+    public function getBestBenchPlayers(MatchDay $match_day): Collection
+    {
+      $q = $this->em->createQuery("SELECT pv FROM App\Entity\PlayerVote pv INNER JOIN pv.player p WHERE pv.match_day = :match_day and ((pv.best = 0 and pv.selected = 0) or (pv.best = 0 and pv.selected = 1))");
+        $q->setParameter('match_day', $match_day);
+        $result = $q->getResult();
+        $best_bench = new ArrayCollection($result);
+
+        return $best_bench;
     }
 
     public function calculateResults(MatchDay $match_day)

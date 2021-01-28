@@ -1,0 +1,44 @@
+<table class="table table-hover">
+    <thead class="thead-light">
+    <tr>
+        <th>Role</th>
+        <th>Name</th>
+        <th>Vote</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set role = '' %}
+    {% for player_vote in player_list %}
+        {% set best_not_selected = highlight_best and (player_vote.getBest() and not player_vote.getSelected()) %}
+        <tr class="player-role role-{{ player_vote.player.role|lower }} {% if role != player_vote.player.role %} role-first {% endif %} {% if best_not_selected == true %} best {% endif %}" >
+            <td>{{ player_vote.player.role }}</td>
+            <td>{{ player_vote.player.name }}</td>
+            <td class="">
+                {{ match_day.getVoteFor(player_vote.player).getVote() }}
+            </td>
+        </tr>
+        {% set role = player_vote.player.role %}
+    {% endfor %}
+    </tbody>
+    <tfoot class="totals">
+        <tr>
+            <td colspan="2">{{ total_label }}</td>
+            <td>{{ total_value }}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<table class="table table-hover">
+    
+    <tbody>
+    {% for player_vote in bench_list %}
+        <tr class="" >
+            <td>{{ player_vote.player.role }}</td>
+            <td>{{ player_vote.player.name }}</td>
+            <td class="">
+                {{ match_day.getVoteFor(player_vote.player).getVote() }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

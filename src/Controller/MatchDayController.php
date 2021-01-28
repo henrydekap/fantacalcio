@@ -28,12 +28,16 @@ class MatchDayController extends AbstractController
     }
 
     $selected_list = $calculator->getSelectedPlayersOrderByRole($match_day);
+    $selected_bench_list = $calculator->getSelectedBenchPlayers($match_day);
     $best_list = $calculator->getBestPlayersOrderByRole($match_day);
+    $best_bench_list = $calculator->getBestBenchPlayers($match_day);
 
     return $this->render('match_day/show.html.twig', [
       'match_day' => $match_day,
       'selected_list' => $selected_list,
+      'selected_bench_list' => $selected_bench_list,
       'best_list' => $best_list,
+      'best_bench_list' => $best_bench_list,
     ]);
   }
   /**
