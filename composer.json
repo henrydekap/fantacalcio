@@ -7,7 +7,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "guzzlehttp/guzzle": "7.0",
+        "guzzlehttp/guzzle": "7.4.4",
         "psr/log": "^1.1",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "5.1.*",
