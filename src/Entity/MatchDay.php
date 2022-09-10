@@ -48,6 +48,12 @@ class MatchDay
    */
   private $playerVotes;
 
+  /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="matchDays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+  private $season;
+
   public function __construct()
   {
     $this->playerVotes = new ArrayCollection();

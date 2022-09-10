@@ -30,6 +30,12 @@ class Player
     private $role;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="players")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $season;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerVote", mappedBy="player", orphanRemoval=true)
      */
     private $playerVotes;

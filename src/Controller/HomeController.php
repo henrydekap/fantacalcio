@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MatchDay;
 use App\Entity\Player;
 use App\Entity\PlayerVote;
+use App\Entity\Season;
 use App\Service\MatchDayScraperInterface;
 use App\Service\MatchDayCalculator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,23 +19,49 @@ class HomeController extends AbstractController
    */
   public function index(EntityManagerInterface $em)
   {
-    $player_repo = $em->getRepository(Player::class);
-    $gk   = $player_repo->findByRole('P');
-    $def  = $player_repo->findByRole('D');
-    $mid  = $player_repo->findByRole('C');
-    $att  = $player_repo->findByRole('A');
-    $player_list = \array_merge($gk, $def, $mid, $att);
-
-    $matchday_repo  = $em->getRepository(MatchDay::class);
-    $match_day_list = $matchday_repo->findAll();
+    $season_repo = $em->getRepository(Season::class);
+    $season_list = $season_repo->findAll();
 
     return $this->render('home/index.html.twig', [
       'controller_name' => 'HomeController',
       'squad_name'      => $this->getParameter('squad_name'),
+      'season_list'          => $season_list,
+    ]);
+  }
+  
+  /**
+   * @Route("/season/{season_id}", name="season_show", methods={"GET"})
+   */
+  public function showSeason(EntityManagerInterface $em, string $season_id)
+  {
+    $season_repo = $em->getRepository(Season::class);
+    $season = $season_repo->findOneById($season_id);
+    $player_list = $season->getPlayers();
+    $match_day_list = $season->getMatchDays();
+
+    return $this->render('home/season.html.twig', [
+      'controller_name' => 'HomeController',
+      'squad_name'      => $this->getParameter('squad_name'),
+      'season'          => $season,
       'player_list'     => $player_list,
       'match_day_list'  => $match_day_list,
     ]);
   }
+  
+  /**
+   * @Route("/", name="season_new")
+   */
+ public function addSeason(EntityManagerInterface $em)
+ {
+   $season_repo = $em->getRepository(Season::class);
+   $season_list = $season_repo->findAll();
+
+   return $this->render('home/index.html.twig', [
+     'controller_name' => 'HomeController',
+     'squad_name'      => $this->getParameter('squad_name'),
+     'season_list'          => $season_list,
+   ]);
+ }
 
   /** 
    * @Route("/scrape", name="scrape")

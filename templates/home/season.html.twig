@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SbrambaFantacalcio Manager{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>{{ squad_name }} - {{ season.name }}</h1>
+    <a class="btn btn-primary" href="{{ path('player_new') }}">Add Player</a>
+    <table class="table table-hover mt-1">
+        <thead class="thead-light">
+        <tr>
+            <th>Role</th>
+            <th>Name</th>
+            <th>%</th>
+            {% for match_day in match_day_list %}
+                <th>
+                    <a href="{{ path('matchday_show', { match_day_number: match_day.number }) }}">{{ match_day.number }}</a>
+                </th>
+            {% endfor %}
+                <th>
+                    <a href="{{ path('matchday_edit', { match_day_number: match_day_list|length + 1 }) }}">ADD</a>
+                </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set role = '' %}
+        {% for player in player_list %}
+            <tr class="player-role role-{{ player.role|lower }} {% if role != player.role %} role-first {% endif %}" >
+                <td>{{ player.role }}</td>
+                <td>{{ player.name }}</td>
+                <td class="percentage
+                {% if player.getBestPercentage() < 0.2 %} best-0-2 
+                {% elseif player.getBestPercentage() >= 0.2 and player.getBestPercentage() < 0.4 %} best-2-4 
+                {% elseif player.getBestPercentage() >= 0.4 and player.getBestPercentage() < 0.6 %} best-4-6 
+                {% elseif player.getBestPercentage() >= 0.6 and player.getBestPercentage() < 0.8 %} best-6-8 
+                {% else %} best-8-0 {% endif %} ">{{ player.getBestPercentage()|format_percent_number }}</td>
+                {% for match_day in match_day_list %}
+                    <td class="{% if match_day.getVoteFor(player).getBest() %} best {% endif %}">
+                        {{ match_day.getVoteFor(player).getVote() }}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% set role = player.role %}
+        {% endfor %}
+        </tbody>
+        <tfoot class="totals">
+            <tr>
+                <td colspan="3">Reale</td>
+                {% for match_day in match_day_list %}
+                    <td>{{ match_day.getResult() }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td colspan="3">Massimo</td>
+                {% for match_day in match_day_list %}
+                    <td>{{ match_day.getBestResult() }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td colspan="3">Differenza</td>
+                {% for match_day in match_day_list %}
+                    <td class="{% if match_day.getDifference() > 5 %} diff-bad {% else %} diff-good {% endif %}">{{ match_day.getDifference() }}</td>
+                {% endfor %}
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
